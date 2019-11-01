@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QGraphicsView>
 #include <QMouseEvent>
+#include "myrect.h"
 
 class MyGraphicView : public QGraphicsView
 {
@@ -12,17 +13,20 @@ public:
     explicit MyGraphicView(QWidget *parent = nullptr);
     ~MyGraphicView();
 
+protected:
+    // Override functions
+    void mousePressEvent(QMouseEvent *event);
+
 private:
     QGraphicsScene *mScene;
+    MyRect *mRect = nullptr;
     QPoint mClickedPoint;
+    bool isDrawed;
 
+    // Custom functions
     void initScene();
-    void setGraphicViewSize(int w, int h);
-
-    void mousePressEvent(QMouseEvent *event);
     void showMenu(const QPoint p);
     void drawRectangle();
-    void drawCircle();
 };
 
 #endif // MYGRAPHICVIEW_H

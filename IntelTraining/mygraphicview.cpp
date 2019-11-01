@@ -1,53 +1,52 @@
-#include "mygraphicview.h"
 #include <QMenu>
-MyGraphicView::MyGraphicView(QWidget *parent) : QGraphicsView (parent)
+#include <QGraphicsRectItem>
+
+#include "mygraphicview.h"
+MyGraphicView::MyGraphicView(QWidget *parent) : QGraphicsView (parent), isDrawed(false)
 {
     initScene();
 }
 
 MyGraphicView::~MyGraphicView()
 {
+    if ( mRect != nullptr) {
+        delete mRect;
+    }
     delete mScene;
 }
 
 void MyGraphicView::initScene()
 {
     mScene = new QGraphicsScene();
-    //mScene->setBackgroundBrush(Qt::red);
+    // this->setBackgroundBrush(Qt::yellow);
 
     this->setScene(mScene);
-    this->setGeometry(0,0, 100, 100);
-}
-
-void MyGraphicView::setGraphicViewSize(int w, int h)
-{
-    this->setGeometry(0,0, w, h);
+    this->viewport()->size().width();
+    this->setSceneRect(0, 0, this->viewport()->size().width(), this->viewport()->size().height());
 }
 
 void MyGraphicView::mousePressEvent(QMouseEvent *event)
 {
     qDebug("Clicked at [%d, %d]", event->x(), event->y());
-    if (event->button() == Qt::RightButton) {
+    if (event->button() == Qt::RightButton && !isDrawed) {
         mClickedPoint = QPoint(event->x(), event->y());
         showMenu(QPoint(event->globalX(), event->globalY()));
     }
+    QGraphicsView::mousePressEvent(event);
 }
 
 void MyGraphicView::showMenu(const QPoint p)
 {
     QMenu myMenu;
     QAction drawRectangle("Draw rectangle");
-    QAction drawCircle("Draw circle");
+    QAction drawCircle("Clear rectangle");
 
     myMenu.addAction(&drawRectangle);
     myMenu.addAction(&drawCircle);
     QAction* selectedItem = myMenu.exec(p);
     if (selectedItem)
     {
-        if (selectedItem->text() == "Draw circle") {
-            this->drawCircle();
-        }
-        else {
+        if (selectedItem->text() == "Draw rectangle") {
             this->drawRectangle();
         }
     }
@@ -59,10 +58,15 @@ void MyGraphicView::showMenu(const QPoint p)
 
 void MyGraphicView::drawRectangle()
 {
-    qDebug("Draw rectangle at [%d, %d]", mClickedPoint.x(), mClickedPoint.y());
-}
+    if (mRect == nullptr) {
+        qDebug("Create my rect");
+        mRect = new MyRect();
+        mScene->addItem(mRect);
+    }
 
-void MyGraphicView::drawCircle()
-{
-    qDebug("Draw circle at [%d, %d]", mClickedPoint.x(), mClickedPoint.y());
+    mRect -> setRect(mClickedPoint.x(), mClickedPoint.y(), 100, 100);
+    mRect ->setBrush(QBrush(Qt::green));
+    isDrawed = true;
+    qDebug("Draw rectangle at [%d, %d]", mClickedPoint.x(), mClickedPoint.y());
+
 }
