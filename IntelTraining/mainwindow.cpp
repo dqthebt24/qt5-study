@@ -25,7 +25,6 @@ void MainWindow::initWindow()
     ui->centralWidget->setGeometry(0,0, 800, 800);
     ui->centralWidget->setLayout(vLayout);
     //setGraphicViewSize(ui->centralWidget->geometry().width(), ui->centralWidget->geometry().height());
-
 }
 
 void MainWindow::initGraphicView()

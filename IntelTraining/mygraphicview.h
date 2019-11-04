@@ -22,6 +22,7 @@ protected:
 public slots:
     void onDrawArrow(QPointF p);
     void onHoldArrow(MyRect* const);
+    void onDecorateClick();
 private:
     QGraphicsScene *mScene;
     MyRect *mFirstRect = nullptr;
@@ -30,6 +31,8 @@ private:
     bool mIsCaptureMouseMove;
 
     QPointF mClickedPoint;
+    QList<QPointF> mListClickedPoint;
+    QList<MyRect*> mListSurroundRect;
 
     // Custom functions
     void initScene();
@@ -40,6 +43,7 @@ private:
     bool isFulledDraw();
     void enableMoveMoveTrack();
     void disableMoveMoveTrack();
+    void drawSurroundRect(const QPointF pTopLeft);
 };
 
 #endif // MYGRAPHICVIEW_H
