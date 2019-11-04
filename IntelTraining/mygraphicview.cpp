@@ -1,18 +1,29 @@
 #include <QMenu>
 #include <QGraphicsRectItem>
+#include <QPointF>
 
 #include "mygraphicview.h"
-MyGraphicView::MyGraphicView(QWidget *parent) : QGraphicsView (parent), isDrawed(false)
+MyGraphicView::MyGraphicView(QWidget *parent) : QGraphicsView (parent), mIsCaptureMouseMove(false)
 {
-    setMouseTracking(true);
     initScene();
+    initRects();
+    initArrow();
 }
 
 MyGraphicView::~MyGraphicView()
 {
-    if ( mRect != nullptr) {
-        delete mRect;
+    if ( mFirstRect != nullptr) {
+        delete mFirstRect;
     }
+
+    if ( mSecondRect != nullptr) {
+        delete mSecondRect;
+    }
+
+    if (mArrow != nullptr) {
+        delete mArrow;
+    }
+
     delete mScene;
 }
 
@@ -27,45 +38,80 @@ void MyGraphicView::initScene()
     this->setSceneRect(0, 0, this->viewport()->size().width(), this->viewport()->size().height());
 }
 
+void MyGraphicView::initRects()
+{
+    mFirstRect = new MyRect();
+    mFirstRect->setBrush(QBrush(Qt::green));
+
+    mSecondRect = new MyRect();
+    mSecondRect->setBrush(QBrush(Qt::green));
+
+    mScene->addItem(mFirstRect);
+    mScene->addItem(mSecondRect);
+
+    connect(mFirstRect, SIGNAL(sigDrawArrow(QPointF)), this, SLOT(onDrawArrow(QPointF)));
+    connect(mSecondRect, SIGNAL(sigDrawArrow(QPointF)), this, SLOT(onDrawArrow(QPointF)));
+    connect(mFirstRect, SIGNAL(sigHoldArrow(MyRect* const)), this, SLOT(onHoldArrow(MyRect* const)));
+    connect(mSecondRect, SIGNAL(sigHoldArrow(MyRect* const)), this, SLOT(onHoldArrow(MyRect* const)));
+}
+
+void MyGraphicView::initArrow()
+{
+    mArrow = new MyArrow();
+    mScene->addItem(mArrow);
+}
+
 void MyGraphicView::mousePressEvent(QMouseEvent *event)
 {
-    if (event->button() == Qt::RightButton && !isDrawed) {
+    qDebug("View clicked [%d,%d]", event->x(), event->y());
+    if (event->button() == Qt::RightButton && !isFulledDraw()) {
         mClickedPoint = this->mapToScene(event->pos());
         showMenu(QPoint(event->globalX(), event->globalY()));
     } else {
         QGraphicsView::mousePressEvent(event);
     }
-
-    if (event->button() == Qt::RightButton && isDrawed) {
-        MyArrow *arrow = new MyArrow();
-        mScene->addItem(arrow);
-        arrow->setPos(this->mapToScene(event->pos()));
-        qDebug("Draw arrow!");
-    }
 }
 
 void MyGraphicView::mouseMoveEvent(QMouseEvent *event)
 {
-    if(isDrawed) {
-        QPointF p = this->mapToScene(event->pos());
-        // mRect -> setRect( p.x(), p.y(), 200, 200);
+    if (mArrow != nullptr && mIsCaptureMouseMove) {
+        mArrow->setPos(this->mapToScene(event->pos()));
     }
+}
+
+void MyGraphicView::onDrawArrow(QPointF p)
+{
+    if (mArrow != nullptr) {
+        mArrow->enable();
+        mArrow->setPos(this->mapToScene(this->mapFromScene(p)));
+
+        enableMoveMoveTrack();
+
+        mFirstRect->disbaleShowMenuFunction();
+        mSecondRect->disbaleShowMenuFunction();
+    }
+}
+
+void MyGraphicView::onHoldArrow(MyRect * const rect)
+{
+    if (rect == mFirstRect) {
+        qDebug("Rect 1 Hold");
+    } else if (rect == mSecondRect) {
+        qDebug("Rect 2 Hold");
+    }
+    disableMoveMoveTrack();
 }
 
 void MyGraphicView::showMenu(const QPoint p)
 {
     QMenu myMenu;
     QAction drawRectangle("Draw rectangle");
-    QAction drawCircle("Clear rectangle");
 
     myMenu.addAction(&drawRectangle);
-    myMenu.addAction(&drawCircle);
     QAction* selectedItem = myMenu.exec(p);
     if (selectedItem)
     {
-        if (selectedItem->text() == "Draw rectangle") {
-            this->drawRectangle();
-        }
+        this->drawRectangle();
     }
     else
     {
@@ -75,13 +121,28 @@ void MyGraphicView::showMenu(const QPoint p)
 
 void MyGraphicView::drawRectangle()
 {
-    if (mRect == nullptr) {
-        qDebug("Create my rect");
-        mRect = new MyRect();
-        mScene->addItem(mRect);
-        mRect ->setBrush(QBrush(Qt::green));
+    if (mFirstRect->getDrawStatus() == false) {
+        mFirstRect -> setRect(mClickedPoint.x(), mClickedPoint.y(), 200, 200);
+        mFirstRect->setDrawStatus(true);
+    } else if (mSecondRect->getDrawStatus() == false) {
+        mSecondRect -> setRect(mClickedPoint.x(), mClickedPoint.y(), 200, 200);
+        mSecondRect->setDrawStatus(true);
     }
+}
 
-    mRect -> setRect(mClickedPoint.x(), mClickedPoint.y(), 200, 200);
-    isDrawed = true;
+bool MyGraphicView::isFulledDraw()
+{
+    return mFirstRect->getDrawStatus() && mSecondRect->getDrawStatus();
+}
+
+void MyGraphicView::enableMoveMoveTrack()
+{
+    mIsCaptureMouseMove = true;
+    setMouseTracking(true);
+}
+
+void MyGraphicView::disableMoveMoveTrack()
+{
+    mIsCaptureMouseMove = false;
+    setMouseTracking(false);
 }

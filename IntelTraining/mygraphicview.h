@@ -19,16 +19,27 @@ protected:
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
 
+public slots:
+    void onDrawArrow(QPointF p);
+    void onHoldArrow(MyRect* const);
 private:
     QGraphicsScene *mScene;
-    MyRect *mRect = nullptr;
+    MyRect *mFirstRect = nullptr;
+    MyRect *mSecondRect = nullptr;
+    MyArrow *mArrow = nullptr;
+    bool mIsCaptureMouseMove;
+
     QPointF mClickedPoint;
-    bool isDrawed;
 
     // Custom functions
     void initScene();
+    void initRects();
+    void initArrow();
     void showMenu(const QPoint p);
     void drawRectangle();
+    bool isFulledDraw();
+    void enableMoveMoveTrack();
+    void disableMoveMoveTrack();
 };
 
 #endif // MYGRAPHICVIEW_H

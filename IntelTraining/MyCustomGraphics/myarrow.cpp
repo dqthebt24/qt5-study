@@ -9,6 +9,8 @@ QRectF MyArrow::boundingRect() const
 
 void MyArrow::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+    if (mIsShow == false)
+        return;
     QPolygon polygon;
     polygon << QPoint(0,-mHeight/2) << QPoint(mWidth/2, 0) << QPoint(mWidth/4, 0) << QPoint(mWidth/4, mHeight/2) << QPoint(-mWidth/4, mHeight/2)
             << QPoint(-mWidth/4, 0) << QPoint(-mWidth/2, 0);
@@ -18,7 +20,7 @@ void MyArrow::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
     Q_UNUSED(widget);
 }
 
-MyArrow::MyArrow() : mWidth(50), mHeight(50)
+MyArrow::MyArrow() : mWidth(50), mHeight(50), mIsShow(false)
 {
 
 }
