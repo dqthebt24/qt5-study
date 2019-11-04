@@ -27,15 +27,15 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    mygraphicview.cpp \
-    myrect.cpp \
-    myarrow.cpp
+        mygraphicview.cpp \
+        MyCustomGraphics\myrect.cpp \
+        MyCustomGraphics\myarrow.cpp
 
 HEADERS += \
         mainwindow.h \
-    mygraphicview.h \
-    myrect.h \
-    myarrow.h
+        mygraphicview.h \
+        MyCustomGraphics\myrect.h \
+        MyCustomGraphics\myarrow.h
 
 FORMS += \
         mainwindow.ui

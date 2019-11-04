@@ -4,8 +4,8 @@
 #include <QObject>
 #include <QGraphicsView>
 #include <QMouseEvent>
-#include "myrect.h"
-#include "myarrow.h"
+#include "MyCustomGraphics\myrect.h"
+#include "MyCustomGraphics\myarrow.h"
 
 class MyGraphicView : public QGraphicsView
 {
