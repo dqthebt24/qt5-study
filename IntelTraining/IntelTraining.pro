@@ -28,12 +28,14 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     mygraphicview.cpp \
-    myrect.cpp
+    myrect.cpp \
+    myarrow.cpp
 
 HEADERS += \
         mainwindow.h \
     mygraphicview.h \
-    myrect.h
+    myrect.h \
+    myarrow.h
 
 FORMS += \
         mainwindow.ui

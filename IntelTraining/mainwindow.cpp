@@ -18,10 +18,11 @@ MainWindow::~MainWindow()
 
 void MainWindow::initWindow()
 {
+    this->setGeometry(0,0, 800, 800);
     vLayout = new QVBoxLayout();
     vLayout->addWidget(mGraphicView);
 
-    ui->centralWidget->setGeometry(0,0, 400, 400);
+    ui->centralWidget->setGeometry(0,0, 800, 800);
     ui->centralWidget->setLayout(vLayout);
     //setGraphicViewSize(ui->centralWidget->geometry().width(), ui->centralWidget->geometry().height());
 

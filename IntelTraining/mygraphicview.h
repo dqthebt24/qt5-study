@@ -5,6 +5,7 @@
 #include <QGraphicsView>
 #include <QMouseEvent>
 #include "myrect.h"
+#include "myarrow.h"
 
 class MyGraphicView : public QGraphicsView
 {
@@ -16,11 +17,12 @@ public:
 protected:
     // Override functions
     void mousePressEvent(QMouseEvent *event);
+    void mouseMoveEvent(QMouseEvent *event);
 
 private:
     QGraphicsScene *mScene;
     MyRect *mRect = nullptr;
-    QPoint mClickedPoint;
+    QPointF mClickedPoint;
     bool isDrawed;
 
     // Custom functions

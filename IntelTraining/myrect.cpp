@@ -4,7 +4,7 @@
 
 void MyRect::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    qDebug("Rect clicked at [%f, %f]", event->pos().x(), event->pos().y());
+    qDebug("[MyRect] Rect clicked at [%f, %f]", event->pos().x(), event->pos().y());
 
     if (event->button() == Qt::RightButton) {
         QMenu myMenu;
