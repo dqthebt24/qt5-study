@@ -18,11 +18,16 @@ protected:
     // Override functions
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
-
+    void dragMoveEvent(QDragMoveEvent *event);
+    void dropEvent(QDropEvent *event);
+signals:
+    void sigDropItem(QPoint p);
 public slots:
     void onDrawArrow(QPointF p);
     void onHoldArrow(MyRect* const);
     void onDecorateClick();
+    void onDrawRectAt(QPoint screenPos);
+
 private:
     QGraphicsScene *mScene;
     MyRect *mFirstRect = nullptr;
@@ -33,6 +38,7 @@ private:
     QPointF mClickedPoint;
     QList<QPointF> mListClickedPoint;
     QList<MyRect*> mListSurroundRect;
+    QList<MyRect*> mListRandomRect;
 
     // Custom functions
     void initScene();

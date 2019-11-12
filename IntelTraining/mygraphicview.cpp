@@ -32,7 +32,21 @@ MyGraphicView::~MyGraphicView()
     for (int i = 0 ;i < mListSurroundRect.size(); i++){
         delete mListSurroundRect[i];
     }
+
+    for (int i = 0 ;i < mListRandomRect.size(); i++){
+        delete mListRandomRect[i];
+    }
     delete mScene;
+}
+
+void MyGraphicView::onDrawRectAt(QPoint screenPos)
+{
+    QPointF p = this->mapToScene(screenPos);
+    MyRect *rect = new MyRect(true);
+    rect->setBrush(QBrush(QColor(255, 0, 255)));
+    rect->setRect(p.x(), p.y(), 30, 30);
+    mListRandomRect.push_back(rect);
+    mScene->addItem(rect);
 }
 
 void MyGraphicView::initScene()
@@ -85,6 +99,16 @@ void MyGraphicView::mouseMoveEvent(QMouseEvent *event)
         mArrow->setPos(this->mapToScene(event->pos()));
     }
     QGraphicsView::mouseMoveEvent(event);
+}
+
+void MyGraphicView::dragMoveEvent(QDragMoveEvent *event)
+{
+    Q_UNUSED(event);
+}
+
+void MyGraphicView::dropEvent(QDropEvent *event)
+{
+    emit sigDropItem(event->pos());
 }
 
 void MyGraphicView::onDrawArrow(QPointF p)

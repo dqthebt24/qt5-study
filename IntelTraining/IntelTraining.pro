@@ -29,13 +29,17 @@ SOURCES += \
         mainwindow.cpp \
         mygraphicview.cpp \
         MyCustomGraphics\myrect.cpp \
-        MyCustomGraphics\myarrow.cpp
+        MyCustomGraphics\myarrow.cpp \
+    MyCustomGraphics/mytreeview.cpp \
+    MyCustomGraphics/mytreeitem.cpp
 
 HEADERS += \
         mainwindow.h \
         mygraphicview.h \
         MyCustomGraphics\myrect.h \
-        MyCustomGraphics\myarrow.h
+        MyCustomGraphics\myarrow.h \
+    MyCustomGraphics/mytreeview.h \
+    MyCustomGraphics/mytreeitem.h
 
 FORMS += \
         mainwindow.ui
