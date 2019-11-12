@@ -13,6 +13,7 @@
 #include "mygraphicview.h"
 #include "MyCustomGraphics/mytreeview.h"
 #include "MyCustomGraphics/mytreeitem.h"
+#include "MyCustomGraphics/myfilter.h"
 
 namespace Ui {
 class MainWindow;
@@ -42,7 +43,7 @@ private:
     MyTreeView* mTreeView;
     QList<QStandardItem*> mListItem1;
     QList<QStandardItem*> mListItem2;
-    QSortFilterProxyModel *mProxyModel;
+    MyFilter *mProxyModel;
     QStandardItemModel* mSourceModel;
     QStandardItem* mItemParentFirst;
     QStandardItem* mItemParentSecond;

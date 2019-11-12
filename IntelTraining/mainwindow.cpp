@@ -126,7 +126,7 @@ void MainWindow::initTreeView()
     mSourceModel->appendRow(mItemParentFirst);
     mSourceModel->appendRow(mItemParentSecond);
 
-    mProxyModel = new QSortFilterProxyModel(this);
+    mProxyModel = new MyFilter(this);
     mProxyModel->setSourceModel(mSourceModel);
 
     mTreeView->setHeaderHidden(true);

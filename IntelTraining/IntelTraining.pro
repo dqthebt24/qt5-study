@@ -31,7 +31,8 @@ SOURCES += \
         MyCustomGraphics\myrect.cpp \
         MyCustomGraphics\myarrow.cpp \
     MyCustomGraphics/mytreeview.cpp \
-    MyCustomGraphics/mytreeitem.cpp
+    MyCustomGraphics/mytreeitem.cpp \
+    MyCustomGraphics/myfilter.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -39,7 +40,8 @@ HEADERS += \
         MyCustomGraphics\myrect.h \
         MyCustomGraphics\myarrow.h \
     MyCustomGraphics/mytreeview.h \
-    MyCustomGraphics/mytreeitem.h
+    MyCustomGraphics/mytreeitem.h \
+    MyCustomGraphics/myfilter.h
 
 FORMS += \
         mainwindow.ui
