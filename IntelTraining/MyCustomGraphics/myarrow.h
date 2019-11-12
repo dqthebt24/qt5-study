@@ -1,23 +1,27 @@
 #ifndef MYARROW_H
 #define MYARROW_H
 
-#include <QGraphicsRectItem>
+#include <QGraphicsLineItem>
 #include <QGraphicsSceneMouseEvent>
 
-class MyArrow : public QObject, public QGraphicsRectItem
+class MyArrow : public QObject, public QGraphicsLineItem
 {
     Q_OBJECT
 private:
-    int mWidth;
-    int mHeight;
     bool mIsShow;
+    QPointF mStart;
+    QPointF mEnd;
+    QPolygonF arrowHead;
 protected:
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 public:
-    MyArrow();
+    MyArrow(QPointF start, QPointF end);
     ~MyArrow();
     void enable() {mIsShow = true;}
+    QPainterPath shape() const;
+    void setEnd(QPointF end) {mEnd = end;}
+    void setStart(QPointF start) {mStart = start;}
 };
 
 #endif // MYARROW_H

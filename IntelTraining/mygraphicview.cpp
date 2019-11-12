@@ -79,7 +79,7 @@ void MyGraphicView::initRects()
 
 void MyGraphicView::initArrow()
 {
-    mArrow = new MyArrow();
+    mArrow = new MyArrow(QPointF(0, 0), QPointF(0, 0));
     mScene->addItem(mArrow);
 }
 
@@ -96,7 +96,8 @@ void MyGraphicView::mousePressEvent(QMouseEvent *event)
 void MyGraphicView::mouseMoveEvent(QMouseEvent *event)
 {
     if (mArrow != nullptr && mIsCaptureMouseMove) {
-        mArrow->setPos(this->mapToScene(event->pos()));
+        mArrow->setEnd(this->mapToScene(event->pos()));
+        mScene->update();
     }
     QGraphicsView::mouseMoveEvent(event);
 }
@@ -115,7 +116,8 @@ void MyGraphicView::onDrawArrow(QPointF p)
 {
     if (mArrow != nullptr) {
         mArrow->enable();
-        mArrow->setPos(this->mapToScene(this->mapFromScene(p)));
+        mArrow->setStart(this->mapToScene(this->mapFromScene(p)));
+        mArrow->setEnd(this->mapToScene(this->mapFromScene(p)));
 
         enableMoveMoveTrack();
 
